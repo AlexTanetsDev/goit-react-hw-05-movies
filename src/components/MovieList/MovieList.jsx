@@ -1,4 +1,5 @@
 import { Box } from "components/Box"
+import { Link } from "react-router-dom"
 
 export const MovieList = ({title, movies}) => {
     return (
@@ -7,7 +8,7 @@ export const MovieList = ({title, movies}) => {
             <ul>
                 {movies.map(movie => {
                     return <li key={movie.id}>
-                        <p>{movie.title}</p>
+                        <Link to={`movies/${movie.id}`}><p>{movie.title}</p></Link>   
                     </li>
                 })}
               
