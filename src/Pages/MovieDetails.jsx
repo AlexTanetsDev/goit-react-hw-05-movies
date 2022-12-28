@@ -1,29 +1,28 @@
 import { Box } from "components/Box"
-import { Link, Outlet, useNavigate, useParams } from "react-router-dom"
+import { Link, NavLink, Outlet, useLocation, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
 import { getMovieDetails } from "apiServise";
 
 export const MovieDetails = () => {
     const { movieId } = useParams();
     const [movie, setMovie] = useState(null);
-    const navigate = useNavigate();
-    
+    const location = useLocation();
+    const backLinkHref = location.state?.from ?? "/";
+
     useEffect(() => {
         getMovieDetails(movieId).then(response => {
           setMovie(response.data)
       })
     }, [movieId])
 
-    const hendleClick = () => {
-        
-    }
+  
 
 
 
     if (movie) {
        return (
         <Box>
-               <button type="button">Go back</button>
+               <NavLink to={backLinkHref}>Go back</NavLink>
                
             <Box display='grid' gridTemplateColumns="200px 1fr">
                    
