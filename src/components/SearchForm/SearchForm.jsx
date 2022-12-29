@@ -1,30 +1,35 @@
 import { useSearchParams } from "react-router-dom";
+import { StyledBtn, StyledForm, StyledInput } from "./SearchForm.styled";
 
 
 export const SearchForm = ({onSubmit}) => {
    const [searchParams, setSearchParams] = useSearchParams();
-   const name = searchParams.get("name") ?? "";
-   
+   const query = searchParams.get("query") ?? "";
+  
 
-    const updateQueryString = (name) => {
-       const nextParams = name !== "" ? { name } : {};
+
+    const updateQueryString = (query) => {
+       const nextParams = query !== "" ? { query } : {};
        setSearchParams(nextParams);
     };
   
+  
+  
   const hendleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(name);
+    onSubmit(query);
+   
     }    
   
     return (
-     <form action="" onSubmit={hendleSubmit}>
-            <input
+     <StyledForm onSubmit={hendleSubmit}>
+            <StyledInput
           type="text"
-          value={name}
+          value={query}
           onChange={e=>{updateQueryString(e.target.value)}}
         />
-        <button type="submit">Sent</button>
-     </form>
+        <StyledBtn type="submit">Search</StyledBtn>
+     </StyledForm>
         
       
    

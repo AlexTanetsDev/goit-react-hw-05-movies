@@ -1,20 +1,22 @@
 import { Box } from "components/Box"
-import { Link, useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom"
+import { StyledLink, StyledList } from "./MovieList.styled";
 
-export const MovieList = ({ title, movies }) => {
+export const MovieList = ({ title, movies, state }) => {
     const location = useLocation();
-
+   
+    const path = location.pathname === "/" ? "movies/" : "";
     return (
-        <Box>
+        <Box maxWidth='500px'>
             {title && (<h2>{title}</h2>)}
-            <ul>
+            <StyledList>
                 {movies.map(movie => {
                     return <li key={movie.id}>
-                        <Link to={`movies/${movie.id}`} state={{from: location}}><p>{movie.title}</p></Link>   
+                        <StyledLink to={`${path}${movie.id}`} state={state}><p>- {movie.title ?? movie.name}</p></StyledLink>   
                     </li>
                 })}
               
-            </ul>
+            </StyledList>
        </Box>
     )
 }

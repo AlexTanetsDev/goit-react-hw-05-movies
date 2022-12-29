@@ -17,7 +17,7 @@ export const Reviews = () => {
     if (reviews) {
 
         return (
-            <div>
+            <Box maxWidth='1000px'>
 
                 {reviews.length !== 0
                     ? (<Box as={"ul"}>
@@ -31,7 +31,7 @@ export const Reviews = () => {
                       </Box>)
                     : (<p>We don't have any reviews for this movie.</p>)}
                 
-            </div>
+            </Box>
       
 
       

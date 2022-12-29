@@ -4,6 +4,7 @@ import { getMovieCast} from "apiServise";
 import { Box } from "components/Box";
 import { useState } from "react";
 import  defaultImage  from "images/default-Img.jpg";
+import { CastItem } from "./Cast.styled";
 
 export const Cast = () => {
     const { movieId } = useParams();
@@ -20,15 +21,17 @@ export const Cast = () => {
         return;
     }
     return (
-        <Box as={'ul'}>
+        <Box as={'ul'} display='grid' gridTemplateColumns='250px 250px 250px 250px' gridGap='10px' ml='auto' mr='auto'>
             {cast.map(actor => {
-                const profile = actor.profile_path ? `https://image.tmdb.org/t/p/w200${actor.profile_path}` : defaultImage;
+                const profile = actor.profile_path ? `https://image.tmdb.org/t/p/w300${actor.profile_path}` : defaultImage;
 
-                return <li key={actor.id}>
-                    <img src={profile} alt="" width='200px'/>
+                return <CastItem key={actor.id}>
+                    <img src={profile} alt="" width='250px' />
+                    <Box p="5px">
                     <p>{actor.name}</p>
-                    <p>Character : { actor.character}</p>
-                </li>
+                        <p>Character : {actor.character}</p>
+                    </Box>
+                </CastItem>
             })}
         </Box>
         

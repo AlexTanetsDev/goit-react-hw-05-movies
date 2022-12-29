@@ -2,10 +2,13 @@ import { Box } from "components/Box"
 import { useState, useEffect } from "react"
 import { getTrendingMovies } from "apiServise"
 import { MovieList } from "components/MovieList/MovieList"
+import { useLocation } from "react-router-dom"
 
 
 export const Home = () => {
     const [movies, setMovies] = useState([]);
+ const location = useLocation();
+
     useEffect(() => {
      
         getTrendingMovies().then(res => {
@@ -18,8 +21,8 @@ export const Home = () => {
     return (
         <>
              
-            <Box>
-                <MovieList movies={movies} title={ "Tranding today" } />
+            <Box p='15px'>
+                <MovieList movies={movies} title={ "Tranding today" } state={ {from: location}} />
             </Box>  
             
         </>
