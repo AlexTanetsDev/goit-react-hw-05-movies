@@ -3,8 +3,9 @@ import { SearchForm } from "components/SearchForm/SearchForm"
 import { getMovieByQuery } from "apiServise";
 import { MovieList } from "components/MovieList/MovieList"
 import { useLocation, useSearchParams } from "react-router-dom";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-export const Movies = () => { 
+ const Movies = () => { 
     const [searchParams] = useSearchParams();
     const paramsQuery = searchParams.get('query');
     
@@ -17,11 +18,21 @@ export const Movies = () => {
         if (!searchQuery) {
             return;
         }
-        
-        getMovieByQuery(searchQuery).then(response => {
-           
+
+        try {
+            getMovieByQuery(searchQuery).then(response => {
+                if (response.data.results.length === 0) {
+                    Notify.failure(`We don't have any results rof this keyword, please try another`)
+                    return;
+              }
+            
             setMovies(response.data.results);
         });
+        } catch (error) {
+            Notify.failure('OOOOOpps... Something wrong(((')
+        }
+        
+     
 
     }, [searchQuery])
 
@@ -39,4 +50,7 @@ export const Movies = () => {
         </>
        
     )
-}
+ }
+
+
+export default Movies;

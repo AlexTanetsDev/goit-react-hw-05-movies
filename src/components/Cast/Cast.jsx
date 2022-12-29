@@ -1,20 +1,29 @@
-import { useParams } from "react-router-dom"
+import { useParams} from "react-router-dom"
 import { useEffect } from "react";
 import { getMovieCast} from "apiServise";
 import { Box } from "components/Box";
 import { useState } from "react";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import  defaultImage  from "images/default-Img.jpg";
 import { CastItem } from "./Cast.styled";
 
-export const Cast = () => {
+
+
+ const Cast = () => {
     const { movieId } = useParams();
     const [cast, setCast] = useState(null)
-   
+  
 
-    useEffect(() => {
-        getMovieCast(movieId).then(response => {
+     useEffect(() => {
+      try {
+              getMovieCast(movieId).then(response => {
             setCast(response.data.cast);
       })
+        } catch (error) {
+            Notify.failure('OOOOOpps... Something wrong(((');
+        }   
+     
+      
     }, [movieId])
     
     if (!cast) {
@@ -36,4 +45,6 @@ export const Cast = () => {
         </Box>
         
     )
-}
+ }
+
+export default Cast;

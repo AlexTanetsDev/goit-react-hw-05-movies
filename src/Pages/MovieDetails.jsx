@@ -1,23 +1,34 @@
 import { Box } from "components/Box"
-import { NavLink, Outlet, useLocation, useParams } from "react-router-dom"
-import { useEffect, useState } from "react";
-import { getMovieDetails } from "apiServise";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { NavLink, Outlet, useLocation, useParams} from "react-router-dom"
+import { useEffect, useState, Suspense } from "react";
+import { getMovieDetails} from "apiServise";
 import defaultImage from "images/default-Img.jpg";
 import styled from "styled-components";
 
-export const MovieDetails = () => {
-    const { movieId } = useParams();
+ const MovieDetails = () => {
+     const { movieId } = useParams();
+    //  const [searchParams] = useSearchParams()
+    //  const mediaType = searchParams.get('mediaType')
     const [movie, setMovie] = useState(null);
     const location = useLocation();
     const [navPath] = useState(location.state?.from);
 
     const backLinkHref = navPath ?? "/";
 
-
-    useEffect(() => {
-        getMovieDetails(movieId).then(response => {
-          setMovie(response.data)
-      })
+   
+     useEffect(() => {
+   
+             
+              try {
+                getMovieDetails(movieId).then(response => {
+                    setMovie(response.data)
+                })
+            } catch (error) {
+                Notify.failure("OOOPS")
+              }
+       
+    
     }, [movieId])
 
   
@@ -26,7 +37,7 @@ export const MovieDetails = () => {
 
     if (movie) {
         const poster = movie.poster_path ? `https://image.tmdb.org/t/p/w300${movie.poster_path}` : defaultImage;
-        const score = Math.round(movie.vote_average)
+        const score = movie.vote_average.toFixed(1)
        return (
         <Box p='15px'  display='grid' gridGap="10px">
                <StyledBackLink to={backLinkHref}>Go back</StyledBackLink>
@@ -42,7 +53,7 @@ export const MovieDetails = () => {
                     <p>{movie.overview }</p>
                     <h3>Genres</h3>
                        
-                    <Box as={'ul'} display='flex'>
+                    <Box as={'ul'} display='flex' gridGap='10px'>
                         {movie.genres.map(gen => {
                             return <li key={gen.id}>{gen.name}</li>
                         })}
@@ -58,14 +69,18 @@ export const MovieDetails = () => {
                     <StyledBackLink to="reviews">Reviews</StyledBackLink>
                 </Box>
             </Box>
-               
-            <Outlet/>
+               <Suspense>
+                   <Outlet/>
+               </Suspense>    
+            
         </Box>
     )
 }
  
 }
 
+
+export default MovieDetails;
 
 
 const StyledBackLink = styled(NavLink)`

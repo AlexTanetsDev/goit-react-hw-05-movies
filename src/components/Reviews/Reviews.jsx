@@ -2,15 +2,20 @@ import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { getMovieReview } from "apiServise"
 import { Box } from "components/Box";
-
-export const Reviews = () => {
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+ const Reviews = () => {
     const { movieId } = useParams();
     const [reviews, setReviews] = useState(null);
     
-    useEffect(() => {
-        getMovieReview(movieId).then(response => {
+     useEffect(() => {
+        try {
+               getMovieReview(movieId).then(response => {
             setReviews(response.data.results);
       })
+        } catch (error) {
+            Notify.failure('OOOOOpps... Something wrong(((');
+        }
+     
 
     }, [movieId])
     
@@ -39,4 +44,6 @@ export const Reviews = () => {
     }
 
 
-}
+ }
+
+export default Reviews;
